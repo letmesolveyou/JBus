@@ -1,35 +1,63 @@
 package SafiaAmitaJBusBR;
 
-
-/**
- * Write a description of class JBus here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 public class JBus
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class JBus
-     */
-    public JBus()
+    public int getBusId()
     {
-        // initialise instance variables
-        x = 0;
+        return 0;
+    }
+    
+    public String getBusName()
+    {
+        return "Bus";
+    }
+    
+    public boolean isDiscount()
+    {
+        return true;
+    }  
+    
+    public float getDiscountPercentage (int beforeDiscount, int afterDiscount)
+    {
+        if (beforeDiscount > afterDiscount) {
+            float discount = ((beforeDiscount - afterDiscount) * 100.0f) / beforeDiscount;
+            return discount;
+        } else {
+            return 0.0f;
+        }
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
+    public int getDiscountedPrice (int price, float discountPercentage)
     {
-        // put your code here
-        return x + y;
+        if (discountPercentage > 100.0f) {
+            discountPercentage = 100.0f;
+        }
+        
+        float discountAmount = (discountPercentage / 100.0f) * price;
+        return (int)(price - discountAmount);
     }
+    
+    public int getOriginalPrice (int discountedPrice, float discountPercentage)
+    {
+        float originalPrice = discountedPrice / (100.0f - discountPercentage);
+        return (int)(originalPrice);
+    }
+    
+    
+    
+    public static void main(String[] args) {
+        JBus jbus = new JBus();
+
+        int beforeDiscount = 1000;
+        int afterDiscount = 900;
+        
+        float discountPercentage = jbus.getDiscountPercentage(beforeDiscount, afterDiscount);
+        System.out.println("Discount Percentage: " + discountPercentage + "%");
+    
+        int originalPrice = jbus.getOriginalPrice(afterDiscount, discountPercentage);
+        System.out.println("Original Price: " + originalPrice);
+    }
+    
+    
 }
+    
