@@ -1,18 +1,18 @@
 #BlueJ package file
-dependency1.from=JBus
-dependency1.to=Bus
+dependency1.from=Bus
+dependency1.to=Facility
 dependency1.type=UsesDependency
-dependency2.from=JBus
+dependency2.from=Bus
 dependency2.to=Price
 dependency2.type=UsesDependency
 dependency3.from=JBus
-dependency3.to=Facility
+dependency3.to=Bus
 dependency3.type=UsesDependency
-dependency4.from=Bus
-dependency4.to=Facility
+dependency4.from=JBus
+dependency4.to=Price
 dependency4.type=UsesDependency
-dependency5.from=Bus
-dependency5.to=Price
+dependency5.from=JBus
+dependency5.to=Facility
 dependency5.type=UsesDependency
 objectbench.height=102
 objectbench.width=741
