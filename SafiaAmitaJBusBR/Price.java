@@ -2,9 +2,9 @@ package SafiaAmitaJBusBR;
 
 public class Price
 {
-    double rebate;
-    double price;
-    int discount; 
+    public double rebate;
+    public double price;
+    public int discount; 
 
     public Price(double price)
     {
@@ -23,7 +23,7 @@ public class Price
     public Price(double price, double rebate)
     {
         this.price = price;
-        this.rebate = discount;
+        this.rebate = rebate;
         this.discount = 0;
     }
     
@@ -38,7 +38,7 @@ public class Price
             return 0;
         }
         
-        return (double) this.price - (this.discount / 100 * this.price);
+        return (double) this.price - (this.discount * this.price);
     }
     
     private double getRebatedPrice()

@@ -2,8 +2,8 @@ package SafiaAmitaJBusBR;
 
 public class Rating
 {
-    long count;
-    long total;
+    private long count;
+    private long total;
 
     public Rating()
     {
@@ -20,7 +20,7 @@ public class Rating
     private double getAverage ()
     {
         if (this.count == 0){
-            return this.total;
+            return 0;
         }
         
         return (double) this.total / this.count;
