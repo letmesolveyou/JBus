@@ -60,9 +60,18 @@ public class JBus
         return (int)(totalPrice);
     }
     
+    public static Bus createBus()
+    {
+        Price price = new Price (750000, 5);
+        Bus bus = new Bus ("Netlab Bus", Facility.LUNCH, price, 25);
+        return bus;
+    }
+    
     public static void main(String[] args) {
+         /*
         JBus jbus = new JBus();
 
+       
         int beforeDiscount = 1000;
         int afterDiscount = 900;
         int numberOfSeat = 3;
@@ -81,10 +90,13 @@ public class JBus
         
         int totalPrice = jbus.getTotalPrice(beforeDiscount, numberOfSeat);
         System.out.println("Total Price: " + totalPrice);
+        */
+       
+       Bus testBus = createBus();
+        System.out.println(testBus.name);
+        System.out.println(testBus.facility);
+        System.out.println(testBus.price.price);
+        System.out.println(testBus.capacity);
     }
-    
-   
-    
-    
 }
     
