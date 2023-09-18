@@ -11,13 +11,13 @@ public class Rating
         this.total=0;
     }
     
-    private void insert (int rating)
+    public void insert (int rating)
     {
         this.total += rating;
         this.count++;
     }
     
-    private double getAverage ()
+    public double getAverage ()
     {
         if (this.count == 0){
             return 0;
@@ -26,12 +26,12 @@ public class Rating
         return (double) this.total / this.count;
     }
     
-    private long getCount()
+    public long getCount()
     {
         return this.count;
     }
     
-    private long getTotal()
+    public long getTotal()
     {
         return this.total;
     }

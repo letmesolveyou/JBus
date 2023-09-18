@@ -90,13 +90,28 @@ public class JBus
         
         int totalPrice = jbus.getTotalPrice(beforeDiscount, numberOfSeat);
         System.out.println("Total Price: " + totalPrice);
-        */
+        
        
        Bus testBus = createBus();
         System.out.println(testBus.name);
         System.out.println(testBus.facility);
         System.out.println(testBus.price.price);
         System.out.println(testBus.capacity);
+        */
+        
+        Price originalPrice = new Price(90.0);
+
+        Voucher voucher = new Voucher("Voucher Mita", 2206, Type.DISCOUNT, 50.0, 15.0); //ganti tipe disini ya mit, rebate=76,5, disc=75
+
+        System.out.println("Used gakkk " + voucher.isUsed()); // salah
+
+        if (voucher.canApply(originalPrice)) {
+            double Priceee = voucher.apply(originalPrice);
+            System.out.println("Price: " + Priceee);
+        } 
+
+        System.out.println("Used gakkk " + voucher.isUsed()); // benar
     }
 }
+
     
