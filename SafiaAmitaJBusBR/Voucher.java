@@ -23,6 +23,14 @@ public class Voucher
     {
         this.used = true; 
         
+        if (cut > 100){
+            cut = 100;
+        }
+
+        if (cut == 100){
+            return 0;
+        }
+        
         if (type == Type.DISCOUNT){
             return (double) price.price -  price.price * cut / 100.0;
         }
