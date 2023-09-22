@@ -60,13 +60,6 @@ public class JBus
         return (int)(totalPrice);
     }
     
-    public static Bus createBus()
-    {
-        Price price = new Price (750000, 5);
-        Bus bus = new Bus ("Netlab Bus", Facility.LUNCH, price, 25);
-        return bus;
-    }
-    
     public static void main(String[] args) {
          /*
         JBus jbus = new JBus();
@@ -97,7 +90,7 @@ public class JBus
         System.out.println(testBus.facility);
         System.out.println(testBus.price.price);
         System.out.println(testBus.capacity);
-        */
+        
         
         Price originalPrice = new Price(90.0);
 
@@ -111,6 +104,16 @@ public class JBus
         } 
 
         System.out.println("Used gakkk " + voucher.isUsed()); // benar
+        */
+       
+       Payment testPayment = new Payment (1, 1, 1, "A", 1, "A", "A");
+       Invoice testInvoice = new Invoice (2, 2, 2, "B");
+       Station testStation = new Station (3, "C", City.DEPOK);
+       
+       System.out.println(testPayment.print());
+       System.out.println(testInvoice.print());
+       System.out.println(testStation.print());
+       
     }
 }
 
