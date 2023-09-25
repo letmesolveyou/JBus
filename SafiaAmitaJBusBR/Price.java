@@ -17,5 +17,10 @@ public class Price
         this.price = price;
         this.rebate = rebate;
     }
+    
+    public String toString()
+    {
+        return  "Price : " + price +  "\nRebate : " + rebate;
+    }
         
 }
