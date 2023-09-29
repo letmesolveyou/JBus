@@ -1,10 +1,18 @@
 package SafiaAmitaJBusBR;
 
-public class Account extends Serializable
+public class Account extends Serializable implements FileParser
 {
     public String email;
     public String name;
     public String password;
+    
+    public Object write(){
+        return null;
+    }
+    
+    public boolean read(String file){
+        return true;
+    }
     
     public Account (int id, String name, String email, String password)
     {

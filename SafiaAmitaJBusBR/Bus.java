@@ -1,6 +1,11 @@
 package SafiaAmitaJBusBR;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Map;
 
-public class Bus extends Serializable
+public class Bus extends Serializable implements FileParser
 {
     public int capacity;
     public Facility facility;
@@ -10,6 +15,15 @@ public class Bus extends Serializable
     public Station arrival;
     public BusType busType;
     public City city;
+    public List<Schedule> schedules;
+    
+    public Object write(){
+        return null;
+    }
+    
+    public boolean read(String file){
+        return true;
+    }
     
     public Bus(int id, String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
     {
@@ -22,7 +36,34 @@ public class Bus extends Serializable
         this.city = city;
         this.departure = departure;
         this.arrival = arrival;
+        this.schedules = new ArrayList<Schedule>();
     }
+    
+    public void addSchedule(Calendar calendar)
+    {
+        if (schedules.size() < capacity) {
+            schedules.add(new Schedule(calendar, this.capacity));
+        }
+    }
+    
+    public void printSchedule(Schedule schedule)
+    {
+        Calendar departureDate = schedule.departureSchedule;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy HH:mm:ss");
+        
+        System.out.println("Departure Date: " + dateFormat.format(departureDate.getTime()));
+        
+        System.out.println("Ketersediaan kursi:");
+        
+        for (Map.Entry<String, Boolean> entry : schedule.seatAvailability.entrySet()) {
+            String seatNumber = entry.getKey();
+            boolean isAvailable = entry.getValue();
+            char seatStatus = isAvailable ? 'O' : 'X';
+            System.out.println(seatNumber + ": " + seatStatus);
+        }
+    }
+    
+    
     
     public String toString()
     {

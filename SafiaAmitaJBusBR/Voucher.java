@@ -1,6 +1,6 @@
 package SafiaAmitaJBusBR;
 
-public class Voucher extends Serializable
+public class Voucher extends Serializable implements FileParser
 {
     public String name;
     private boolean used;
@@ -8,6 +8,14 @@ public class Voucher extends Serializable
     public double cut;
     public int code;
     public Type type;
+    
+    public Object write(){
+        return null;
+    }
+    
+    public boolean read(String file){
+        return true;
+    }
     
     public Voucher (int id, String name, int code, Type type, double minimum, double cut)
     {
