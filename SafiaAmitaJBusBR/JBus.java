@@ -1,6 +1,7 @@
 package SafiaAmitaJBusBR;
 
 import java.util.Calendar;
+import java.sql.Timestamp;
 
 public class JBus
 {
@@ -129,7 +130,7 @@ public class JBus
       System.out.println(testAccount);
       System.out.println(testPrice);
       System.out.println(testRating);
-      */
+      
      
     Price[] unfilteredArray = new Price[5];
     for(int i = 0; i < unfilteredArray.length; i++) {
@@ -161,6 +162,43 @@ public class JBus
     for(Schedule s: testBus.schedules){
     testBus.printSchedule(s);
     }
+    
+    */
+   
+    Bus b = createBus();
+    Timestamp schedule1 = Timestamp.valueOf("2023-07-18 15:00:00");
+    Timestamp schedule2 = Timestamp.valueOf("2023-07-20 12:00:00");
+
+    // Menambahkan jadwal keberangkatan ke Bus
+    b.addSchedule(schedule1, 12);
+    b.addSchedule(schedule2, 12);
+
+    // Menampilkan jadwal keberangkatan
+    System.out.println("Schedules:");
+    b.schedules.forEach(Schedule::printSchedule);
+
+    // Membuat pemesanan kursi dengan tanggal dan kursi yang berbeda
+    Timestamp t1 = Timestamp.valueOf("2023-07-19 15:00:00");
+    System.out.println("\nMake booking at July 19, 2023 15:00:00 Seat BR12");
+    System.out.println(Payment.makeBooking(t1, "BR12", b)); // Invalid date
+
+    Timestamp t2 = Timestamp.valueOf("2023-07-18 15:00:00");
+    System.out.println("\nMake booking at July 18, 2023 15:00:00 Seat BR20");
+    System.out.println(Payment.makeBooking(t2, "BR20", b)); // Invalid seat
+
+    System.out.println("\nMake booking at July 18, 2023 15:00:00 Seat BR07");
+    System.out.println(Payment.makeBooking(t2, "BR07", b)); // Valid date and seat
+
+    Timestamp t3 = Timestamp.valueOf("2023-07-20 12:00:00");
+    System.out.println("\nMake booking at July 20, 2023 12:00:00 Seat BR01");
+    System.out.println(Payment.makeBooking(t3, "BR01", b)); // Valid date and seat
+
+    System.out.println("\nMake booking at July 20, 2023 12:00:00 Seat BR01 again");
+    System.out.println(Payment.makeBooking(t3, "BR01", b)); // Invalid seat (already booked)
+
+    // Menampilkan jadwal keberangkatan setelah pemesanan
+    System.out.println("\nUpdated Schedule\n");
+    b.schedules.forEach(Schedule::printSchedule);
 }
 
 public static Bus createBus() {

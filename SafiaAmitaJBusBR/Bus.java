@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.sql.Timestamp;
 
 public class Bus extends Serializable implements FileParser
 {
@@ -36,37 +37,27 @@ public class Bus extends Serializable implements FileParser
         this.city = city;
         this.departure = departure;
         this.arrival = arrival;
-        this.schedules = new ArrayList<Schedule>();
+        this.schedules = new ArrayList<>();
     }
     
-    public void addSchedule(Calendar calendar)
+    public void addSchedule(Timestamp calendar, int capacity)
     {
         if (schedules.size() < capacity) {
             schedules.add(new Schedule(calendar, this.capacity));
         }
     }
     
-    public void printSchedule(Schedule schedule)
-    {
-        Calendar departureDate = schedule.departureSchedule;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy HH:mm:ss");
-        
-        System.out.println("Departure Date: " + dateFormat.format(departureDate.getTime()));
-        
-        System.out.println("Ketersediaan kursi:");
-        
-        for (Map.Entry<String, Boolean> entry : schedule.seatAvailability.entrySet()) {
-            String seatNumber = entry.getKey();
-            boolean isAvailable = entry.getValue();
-            char seatStatus = isAvailable ? 'O' : 'X';
-            System.out.println(seatNumber + ": " + seatStatus);
-        }
-    }
-    
-    
-    
     public String toString()
     {
-        return "Bus Id : " + super.id + "\nName : " + name + "\nFacility : " + facility + "\nPrice : " + price + "\nCapacity : " + capacity + "\nBus Type : " + busType + "\nCity : " + city + "\nDeparture : " + departure + "\nArrival : " + arrival;
+        return 
+        "Bus Id : " + super.id + 
+        "\nName : " + name + 
+        "\nFacility : " + facility + 
+        "\nPrice : " + price + 
+        "\nCapacity : " + capacity + 
+        "\nBus Type : " + busType + 
+        "\nCity : " + city + 
+        "\nDeparture : " + departure + 
+        "\nArrival : " + arrival;
     }
 }
