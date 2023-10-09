@@ -6,9 +6,8 @@ public class Station extends Serializable
     public String stationName;
     public String address;
 
-    public Station(int id, String stationName, City city, String address)
+    public Station(String stationName, City city, String address)
     {
-        super(id);
         this.stationName = stationName;
         this.city = city;
         this.address = address;
@@ -16,6 +15,6 @@ public class Station extends Serializable
 
     public String toString()
     {
-        return "Station Id : " + super.id + "\nStation Name : " + stationName + "\nCity : " + city +"\nAddress : " + address;
+        return "Station Name : " + stationName + "\nCity : " + city +"\nAddress : " + address;
     }
 }

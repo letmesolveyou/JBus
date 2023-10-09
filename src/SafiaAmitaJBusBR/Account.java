@@ -14,9 +14,8 @@ public class Account extends Serializable implements FileParser
         return true;
     }
     
-    public Account (int id, String name, String email, String password)
+    public Account (String name, String email, String password)
     {
-        super(id);
         this.name = name;
         this.email = email;
         this.password = password;
@@ -24,7 +23,7 @@ public class Account extends Serializable implements FileParser
     
     public String toString()
     {
-        return  "Account Id : " + super.id +  "\nName: " + name + "\nEmail : " + email +  "\nPassword : " + password;
+        return  "Name: " + name + "\nEmail : " + email +  "\nPassword : " + password;
     }
 
 }

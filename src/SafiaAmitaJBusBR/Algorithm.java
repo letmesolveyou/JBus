@@ -1,5 +1,6 @@
 package SafiaAmitaJBusBR;
 import java.util.*;
+
 public class Algorithm {
     public static <T> boolean exists(T[] array, T value) {
         final Iterator<T> it = Arrays.stream(array).iterator();
@@ -56,7 +57,7 @@ public class Algorithm {
         return count(it, pred);
     }
 
-    public static <T> int count(Iterable<T> iterable, Predicate<T> pred) {
+    public static <T> int count (Iterable<T> iterable, Predicate<T> pred) {
         final Iterator<T> it = iterable.iterator();
         return count(it, pred);
     }
@@ -141,6 +142,35 @@ public class Algorithm {
                 resultList.add(current);
             }
         }
+        return resultList;
+    }
+
+    public static <T> List<T> paginate (T[] array, int page, int pageSize, Predicate<T> predicate) {
+        final Iterator<T> it = Arrays.stream(array).filter((java.util.function.Predicate<? super T>) predicate).iterator();
+        return paginate (it, page, pageSize, predicate);
+    }
+
+    public static <T> List<T> paginate(Iterable<T> iterable, int page, int pageSize, Predicate<T> predicate) {
+        final Iterator<T> it = iterable.iterator();
+        return paginate (it, page, pageSize, predicate);
+    }
+
+    public static <T> List<T> paginate(Iterator<T> iterator, int page, int pageSize,  Predicate<T> predicate) {
+        List<T> resultList = new ArrayList<>();
+        int currentIndex = 0;
+        int startIndex = page * pageSize;
+        int endIndex = startIndex + pageSize - 1;
+
+        while (iterator.hasNext()) {
+            T current = iterator.next();
+            if (predicate.predicate(current)) {
+                if (currentIndex >= startIndex && currentIndex <= endIndex) {
+                    resultList.add(current);
+                }
+                currentIndex++;
+            }
+        }
+
         return resultList;
     }
 }

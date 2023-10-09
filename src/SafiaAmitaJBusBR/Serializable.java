@@ -5,7 +5,7 @@ public class Serializable implements Comparable<Serializable> {
     public final int id;
     private static HashMap<Class<?>, Integer> mapCounter = new HashMap<>();
 
-    public Serializable(int id) {
+    protected Serializable() {
         Class<?> clazz = this.getClass();
         if (!mapCounter.containsKey(clazz)) {
             mapCounter.put(clazz, 1);
@@ -15,8 +15,9 @@ public class Serializable implements Comparable<Serializable> {
         mapCounter.put(clazz, serial + 1);
     }
 
-    public static void setLastAssignedId(Class<?> clazz, int value) {
-        mapCounter.put(clazz, value);
+    public static int setLastAssignedId(Class<?> clazz, int value) {
+        return mapCounter.put(clazz, value);
+
     }
 
     public static int getLastAssignedId(Class<?> clazz) {

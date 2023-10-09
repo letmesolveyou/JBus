@@ -26,9 +26,8 @@ public class Bus extends Serializable implements FileParser
         return true;
     }
     
-    public Bus(int id, String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
+    public Bus(String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
     {
-        super(id);
         this.name = name;
         this.facility = facility;
         this.price = price;
@@ -40,7 +39,7 @@ public class Bus extends Serializable implements FileParser
         this.schedules = new ArrayList<>();
     }
     
-    public void addSchedule(Timestamp calendar, int capacity)
+    public void addSchedule(Timestamp calendar)
     {
         if (schedules.size() < capacity) {
             schedules.add(new Schedule(calendar, this.capacity));

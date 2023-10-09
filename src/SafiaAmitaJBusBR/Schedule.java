@@ -1,8 +1,7 @@
 package SafiaAmitaJBusBR;
 import java.sql.Timestamp;
-import java.util.Map;
-import java.util.LinkedHashMap;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Schedule
 {
@@ -42,8 +41,7 @@ public class Schedule
         return false;
     }
     
-    public void printSchedule() 
-    {
+    public void printSchedule() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy HH:mm:ss");
         String formattedDepartureSchedule = dateFormat.format(this.departureSchedule.getTime());
 
@@ -63,5 +61,36 @@ public class Schedule
             currentSeat++;
         }
         System.out.println("\n");
+    }
+
+    public boolean isSeatAvailable(List<String> seats) {
+        for (String seat : seats) {
+            if (!isSeatAvailable(seat)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean bookSeat(List<String> seats) {
+        boolean allSeatsBooked = true;
+        for (String seat : seats) {
+            if (!bookSeat(seat)) {
+                allSeatsBooked = false;
+            }
+        }
+        return allSeatsBooked;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy HH:mm:ss");
+        String formattedDepartureSchedule = dateFormat.format(this.departureSchedule.getTime());
+
+        int totalSeats = seatAvailability.size();
+        int seatsFilled = (int) seatAvailability.values().stream().filter(b -> !b).count();
+
+        return "Schedule: " + formattedDepartureSchedule +
+                "\nOccupied: " + seatsFilled + "/"+ totalSeats;
     }
 }
