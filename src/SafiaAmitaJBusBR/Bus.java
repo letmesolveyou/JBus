@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.sql.Timestamp;
 
-public class Bus extends Serializable implements FileParser
+public class Bus extends Serializable
 {
     public int capacity;
     public Facility facility;
@@ -17,14 +17,6 @@ public class Bus extends Serializable implements FileParser
     public BusType busType;
     public City city;
     public List<Schedule> schedules;
-    
-    public Object write(){
-        return null;
-    }
-    
-    public boolean read(String file){
-        return true;
-    }
     
     public Bus(String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
     {
@@ -38,11 +30,15 @@ public class Bus extends Serializable implements FileParser
         this.arrival = arrival;
         this.schedules = new ArrayList<>();
     }
-    
+
     public void addSchedule(Timestamp calendar)
     {
         if (schedules.size() < capacity) {
-            schedules.add(new Schedule(calendar, this.capacity));
+            try {
+                this.schedules.add(new Schedule(calendar, this.capacity));
+            } catch (Exception e) {
+                System.out.println("Error");
+            }
         }
     }
     

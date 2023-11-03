@@ -261,8 +261,8 @@ public class JBus
         System.out.println("\nUpdated Schedule");
         Algorithm.paginate(b.schedules, 0, 4, t-> true).forEach(System.out::println);
 
-          */
-                // TP Modul 6
+
+               // TP Modul 6
                 String filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\data\\station.json";
                 Gson gson = new Gson();
 
@@ -276,7 +276,25 @@ public class JBus
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+
+        */
+        Renter trueRegex = new Renter ("Mita_280504", "08190183554");
+        System.out.println(trueRegex.validate());
+
+        Renter falseRegex = new Renter ("mitacantik", "081mita");
+        System.out.println(falseRegex.validate());
+
+        Gson gson = new Gson();
+        try {
+            String filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\data\\buses_CS.json";
+            JsonTable<Bus> busList = new JsonTable<>(Bus.class, filepath);
+            List<Bus> filteredBus = filterByDeparture(busList, City.JAKARTA, 1, 10);
+            filteredBus.forEach(bus -> System.out.println(bus.toString()));
+        }
+        catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
 
 
 public static Bus createBus() {
@@ -319,6 +337,52 @@ public static Bus createBus() {
         System.out.println(integerBelow);
         System.out.println("Above 43");
         System.out.println(integerAbove);
+    }
+
+    public static List<Bus> filterByDeparture (List<Bus> buses, City departure, int page, int pageSize) {
+        List<Bus> filteredBuses = buses;
+        List<Bus> list = new ArrayList<Bus>();
+        for(Bus bus : filteredBuses)
+        {
+            if(bus.departure.city.equals(departure))
+            {
+                list.add(bus);
+            }
+        }
+        return Algorithm.paginate(list, page, pageSize, t -> true);
+    }
+
+    public static List<Bus> filterByPrice (List<Bus> buses, int min, int max){
+        List<Bus> filteredBuses = buses;
+        List<Bus> list = new ArrayList<Bus>();
+        for (Bus bus : buses) {
+            if (bus.price.price > min && bus.price.price <= max) {
+                filteredBuses.add(bus);
+            }
+        }
+        return filteredBuses;
+    }
+
+    public static Bus filterBusId (List<Bus> buses, int id) {
+        for (Bus bus : buses) {
+            if (bus.id == id) {
+                return bus;
+            }
+        }
+        return null;
+    }
+
+    public static List<Bus> filterByDepartureandArrival (List<Bus> buses, City departure, City arrival, int page, int pageSize){
+        List<Bus> filteredBuses = buses;
+        List<Bus> list = new ArrayList<Bus>();
+        for(Bus bus : filteredBuses)
+        {
+            if(bus.departure.city.equals(departure) & bus.arrival.city.equals(arrival))
+            {
+                list.add(bus);
+            }
+        }
+        return Algorithm.paginate(list, page, pageSize, t -> true);
     }
 }
 
