@@ -278,10 +278,10 @@ public class JBus
                 }
 
         */
-        Renter trueRegex = new Renter ("Mita_280504", "08190183554");
+        Renter trueRegex = new Renter ("Mita_280504",111111111);
         System.out.println(trueRegex.validate());
 
-        Renter falseRegex = new Renter ("mitacantik", "081mita");
+        Renter falseRegex = new Renter ("mitacantik", 11);
         System.out.println(falseRegex.validate());
 
         Gson gson = new Gson();
