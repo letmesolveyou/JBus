@@ -69,7 +69,7 @@ public class JBus
         return (int)(totalPrice);
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
          /*
         JBus jbus = new JBus();
 
@@ -277,31 +277,60 @@ public class JBus
                     e.printStackTrace();
                 }
 
-        */
+
         Renter trueRegex = new Renter ("Mita_280504",111111111);
         System.out.println(trueRegex.validate());
 
         Renter falseRegex = new Renter ("mitacantik", 11);
         System.out.println(falseRegex.validate());
-
+*/
         Gson gson = new Gson();
         try {
-            String filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\data\\buses_CS.json";
-            JsonTable<Bus> busList = new JsonTable<>(Bus.class, filepath);
-            List<Bus> filteredBus = filterByDeparture(busList, City.JAKARTA, 1, 10);
-            filteredBus.forEach(bus -> System.out.println(bus.toString()));
+            String filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\data\\accountDatabase.json";
+            JsonTable<Account> tableAccount = new JsonTable<>(Account.class, filepath);
+
+            Account account1 = new Account("Mita", "safiamita@ui.com", "Mita_280504");
+            Account account2 = new Account("Hikam", "syahrillah@ugm.com", "Hikam130404");
+
+            // Menambahkan objek Account ke JsonTable
+            tableAccount.add(account1);
+            tableAccount.add(account2);
+
+            // Menyimpan JsonTable ke file "accountDatabase.json"
+            tableAccount.writeJson();
+
+            System.out.println("Data berikut disimpan ke accountDatabase.json");
+            System.out.println(account1.toString());
+            System.out.println(account2.toString());
         }
-        catch (Throwable t) {
-            t.printStackTrace();
+        catch (IOException e) {
+            System.err.println("Terjadi kesalahan saat menulis data ke file: " + e.getMessage());
         }
+
+        Bus bus = createBus();
+        bus.schedules.forEach(Schedule::printSchedule);
+        for(int i =0; i < 10; i++){
+            BookingThread thread = new BookingThread("Thread " + i,bus,
+                    Timestamp.valueOf("2023-07-27 19:00:00"));
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        bus.schedules.forEach(Schedule::printSchedule);
     }
 
+    public static Bus createBus() {
+        Price price = new Price(750000, 5);
+        Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25,
+                BusType.REGULER, City.BANDUNG, new Station("Depok Terminal", City.DEPOK,
+                "Jl. Margonda Raya"), new Station("Halte UI", City.JAKARTA, "Universitas Indonesia"));
+                Timestamp timestamp = Timestamp.valueOf("2023-07-27 19:00:00");
+        bus.addSchedule(timestamp);
+        return bus;
+    }
 
-public static Bus createBus() {
-    Price price = new Price(750000, 5);
-    Bus bus = new Bus("Netlab Bus", Facility.LUNCH, price, 25, BusType.REGULER, City.BANDUNG, new Station("Depok Terminal", City.DEPOK, "Jl. Margonda Raya"), new Station("Halte UI", City.JAKARTA, "Universitas Indonesia"));
-    return bus;
-}
     private static void testExist(Integer[] t) {
         int valueToCheck = 67;
         boolean result3 = Algorithm.exists(t, valueToCheck);
