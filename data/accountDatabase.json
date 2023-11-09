@@ -1,14 +1,1 @@
-[
-  {
-    "email": "safiamita@ui.com",
-    "name": "Mita",
-    "password": "Mita_280504",
-    "id": 0
-  },
-  {
-    "email": "syahrillah@ugm.com",
-    "name": "Hikam",
-    "password": "Hikam130404",
-    "id": 1
-  }
-]
+[{"email":"safiamita@ui.com","name":"Mita","password":"Mita_280504","id":0},{"email":"syahrillah@ugm.com","name":"Hikam","password":"Hikam130404","id":1},{"email":"safiamita@ui.com","name":"Mita","password":"Mita_280504","id":2},{"email":"syahrillah@ugm.com","name":"Hikam","password":"Hikam130404","id":3},{"email":"safiamita@ui.com","name":"Mita","password":"Mita_280504","id":4},{"email":"syahrillah@ugm.com","name":"Hikam","password":"Hikam130404","id":5}]
