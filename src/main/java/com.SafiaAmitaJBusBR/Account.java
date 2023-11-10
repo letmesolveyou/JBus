@@ -1,5 +1,6 @@
 package com.SafiaAmitaJBusBR;
 
+import com.SafiaAmitaJBusBR.dbjson.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,14 +9,18 @@ public class Account extends Serializable
     public String email;
     public String name;
     public String password;
-    private static final String REGEX_EMAIL = "^[a-z0-9]+@([a-z.]+\\.)+com$";
-    private static final String REGEX_PASSWORD = "(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[\\w]{8,}$";
+    public Renter company;
+    public double balance;
+    private static final String REGEX_EMAIL = "^[a-zA-Z0-9]+@[a-zA-Z_]+?\\.[a-zA-Z.]+[a-zA-Z]+$";
+    private static final String REGEX_PASSWORD = "^( =.*[a-z])( =.*[A-Z])( =.*\\d)[a-zA-Z\\d]{8,}$";
     
-    public Account (String name, String email, String password)
+    public Account (String name, String email, String password, Renter Company, double balance)
     {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.company = null;
+        this.balance = 0;
     }
     
     public String toString()

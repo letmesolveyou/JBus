@@ -2,6 +2,7 @@ package com.SafiaAmitaJBusBR;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.SafiaAmitaJBusBR.dbjson.Serializable;
 
 public class Renter extends Serializable
 {

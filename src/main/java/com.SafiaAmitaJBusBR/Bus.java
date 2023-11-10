@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.sql.Timestamp;
+import com.SafiaAmitaJBusBR.dbjson.Serializable;
 
 public class Bus extends Serializable
 {

@@ -1,5 +1,5 @@
 package com.SafiaAmitaJBusBR;
-
+import com.SafiaAmitaJBusBR.dbjson.Serializable;
 public class Station extends Serializable
 {
     public City city;

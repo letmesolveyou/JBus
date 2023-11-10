@@ -1,4 +1,5 @@
-package com.SafiaAmitaJBusBR;
+package com.SafiaAmitaJBusBR.dbjson;
+
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
