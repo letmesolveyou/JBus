@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @version 0.1
  */
 @Retention(value=RetentionPolicy.RUNTIME)
-@Target(value={ElementType.FIELD})
+@Target(value={ElementType.METHOD, ElementType.FIELD})
 public @interface JsonAutowired
 {
 	Class<?> value();

@@ -6,8 +6,10 @@ import com.SafiaAmitaJBusBR.dbjson.Serializable;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@RequestMapping("/page")
+@RestController
 public interface BasicGetController <T extends Serializable> {
-    JsonTable<T> getJsonTable();
+    public abstract JsonTable<T> getJsonTable();
 
     @GetMapping("/{id}")
     public default T getById (@PathVariable int id){
@@ -19,6 +21,6 @@ public interface BasicGetController <T extends Serializable> {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "5") int pageSize
     ){
-        return Algorithm.<T>paginate(getJsonTable(), page, pageSize, a ->true);
+        return Algorithm.<T>paginate(getJsonTable(), page, pageSize, t ->true);
     }
 }

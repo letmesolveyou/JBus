@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
+
+import com.SafiaAmitaJBusBR.dbjson.JsonDBEngine;
+import com.SafiaAmitaJBusBR.dbjson.JsonTable;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.boot.SpringApplication;
@@ -74,6 +77,9 @@ public class JBus
     
     public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(JBus.class, args);
+        JsonDBEngine.Run(JBus.class);
+        Runtime.getRuntime().addShutdownHook(new Thread(()->JsonDBEngine.join()));
+
          /*
         JBus jbus = new JBus();
 
@@ -287,7 +293,8 @@ public class JBus
 
         Renter falseRegex = new Renter ("mitacantik", 11);
         System.out.println(falseRegex.validate());
-*/
+
+
         Gson gson = new Gson();
         try {
             String filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\data\\accountDatabase.json";
@@ -323,6 +330,7 @@ public class JBus
             throw new RuntimeException(e);
         }
         bus.schedules.forEach(Schedule::printSchedule);
+        */
     }
 
     public static Bus createBus() {
