@@ -10,23 +10,23 @@ import com.SafiaAmitaJBusBR.dbjson.Serializable;
 public class Bus extends Serializable
 {
     public int capacity;
-    public Facility facility;
+    public List<Facility> facilities;
     public String name;
     public Price price;
     public Station departure;
     public Station arrival;
     public BusType busType;
-    public City city;
     public List<Schedule> schedules;
+    public int accountId;
     
-    public Bus(String name, Facility facility, Price price, int capacity, BusType busType, City city, Station departure, Station arrival)
+    public Bus(int id, String name, List<Facility> facilities, Price price, int capacity, BusType busType, Station departure, Station arrival)
     {
+        super();
         this.name = name;
-        this.facility = facility;
+        this.facilities = facilities;
         this.price = price;
         this.capacity = capacity;
         this.busType = busType;
-        this.city = city;
         this.departure = departure;
         this.arrival = arrival;
         this.schedules = new ArrayList<>();
@@ -48,11 +48,10 @@ public class Bus extends Serializable
         return 
         "Bus Id : " + super.id + 
         "\nName : " + name + 
-        "\nFacility : " + facility + 
+        "\nFacility : " + facilities +
         "\nPrice : " + price + 
         "\nCapacity : " + capacity + 
-        "\nBus Type : " + busType + 
-        "\nCity : " + city + 
+        "\nBus Type : " + busType +
         "\nDeparture : " + departure + 
         "\nArrival : " + arrival;
     }

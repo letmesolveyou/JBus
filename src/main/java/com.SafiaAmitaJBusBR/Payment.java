@@ -7,21 +7,21 @@ public class Payment extends Invoice
 {
     private int busId;
     public Timestamp departureDate;
-    public String busSeat;
+    public List<String> busSeats;
 
-    public Payment(int buyerId, int renterId, int busId, String busSeat,  Timestamp departureDate)
+    public Payment(int buyerId, int renterId, int busId, List<String> busSeats,  Timestamp departureDate)
     {
         super(buyerId, renterId);
         this.busId = busId;
-        this.busSeat = busSeat;
+        this.busSeats = busSeats;
         this.departureDate = departureDate;
     }
     
-    public Payment (Account buyer, Renter renter, int busId, String busSeat,  Timestamp departureDate)
+    public Payment (Account buyer, Renter renter, int busId, List<String> busSeats,  Timestamp departureDate)
     {
         super(buyer.id, renter.id);
         this.busId = busId;
-        this.busSeat = busSeat;
+        this.busSeats = busSeats;
         this.departureDate = departureDate;
     }
     
@@ -33,7 +33,7 @@ public class Payment extends Invoice
         "\nBuyer Id : " + buyerId + 
         "\nRenter Id : " + renterId + 
         "\nBus Id : " + busId + 
-        "\nBus Seat : " + busSeat + 
+        "\nBus Seat : " + busSeats +
         "\nDeparture Date : " + date;
     }
     

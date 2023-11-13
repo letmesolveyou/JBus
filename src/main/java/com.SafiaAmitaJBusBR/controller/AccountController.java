@@ -13,16 +13,18 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("/account")
 public class AccountController implements BasicGetController<Account>
 {
-    public static JsonTable<Account> accountTable;
-    @JsonAutowired(value = Account.class, filepath= "src\\main\\java\\com\\SafiaAmitaJBusBR\\json\\accountDatabase.json")
+    public static @JsonAutowired(
+            value = Account.class, filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\src\\main\\java\\com.SafiaAmitaJBusBR\\json\\accountDatabase.json"
+    ) JsonTable<Account> accountTable;
+
+    @Override
+    public JsonTable<Account> getJsonTable() {
+        return AccountController.accountTable;
+    }
 
     @GetMapping
     String index(){
         return "account page";
-    }
-
-    public JsonTable<Account> getJsonTable() {
-        return accountTable;
     }
 
     @PostMapping("/register")
@@ -34,6 +36,13 @@ public class AccountController implements BasicGetController<Account>
             )
     {
         String hashedPass = "";
+
+        Account acc = new Account (name, email, password);
+        System.out.println(acc.validate());
+        if (acc.name.isBlank() || !acc.validate() || Algorithm.<Account>exists(getJsonTable(), t -> t.email.equals(acc.email))){
+            return new BaseResponse<>(false, "Gagal register", null);
+        }
+
         try{
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
@@ -47,12 +56,7 @@ public class AccountController implements BasicGetController<Account>
         catch(NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
-        Account acc = new Account (name, email, password);
         Account hashedAcc = new Account (name, email, hashedPass);
-        if (acc.name.isBlank() || !acc.validate() || Algorithm.<Account>exists(getJsonTable(), t -> t.email.equals(acc.email))){
-            return new BaseResponse<>(false, "Gagal register", null);
-        }
         accountTable.add(hashedAcc);
         return new BaseResponse<Account>(true, "Register Berhasil!", hashedAcc);
     }
