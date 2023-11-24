@@ -10,19 +10,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bus")
-public class BusController implements BasicGetController<Bus>
-{
-    public static @JsonAutowired(
-            value = Bus.class, filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\src\\main\\java\\com.SafiaAmitaJBusBR\\json\\bus.json"
-    ) JsonTable<Bus> busTable;
+public class BusController implements BasicGetController<Bus>{
+
+    @JsonAutowired(value = Bus.class, filepath= "C:\\\\Users\\\\LENOVO\\\\Documents\\\\OOP\\\\JBus\\\\src\\\\main\\\\java\\\\com.SafiaAmitaJBusBR\\\\json\\\\bus.json")
+    public static JsonTable<Bus> busTable;
 
     @Override
     public JsonTable<Bus> getJsonTable() {
-        return BusController.busTable;
+        return busTable;
     }
 
     @PostMapping("/create")
-    BaseResponse<Bus> create
+    public BaseResponse<Bus> create
             (
                     @RequestParam int accountId,
                     @RequestParam String name,
@@ -34,34 +33,31 @@ public class BusController implements BasicGetController<Bus>
                     @RequestParam int stationArrivalId
             )
     {
-        try {
-            JsonTable<Account> AccTable = new AccountController().getJsonTable();
-            Account account = Algorithm.<Account>find(AccTable, a->a.id == accountId);
-            if (account == null || account.company == null || !Algorithm.<Station>exists(new StationController().getJsonTable(), t -> t.id == stationArrivalId) || !Algorithm.<Station>exists(new StationController().getJsonTable(), b -> b.id == stationDepartureId) ) {
-                return new BaseResponse<>(false, "Parameter values cannot be blank or null", null);
-            }
+        JsonTable<Account> NewaccTable = new AccountController().getJsonTable();
+        Account akun = Algorithm.<Account>find(NewaccTable, a->a.id == accountId);
+        if(akun == null || akun.company == null || !Algorithm.<Station>exists(new StationController().getJsonTable(), t -> t.id == stationArrivalId) || !Algorithm.<Station>exists(new StationController().getJsonTable(), b -> b.id == stationDepartureId))
+        {
+            return new BaseResponse<>(false, "Bus gagal dibuat", null);
 
-            Bus newBus = new Bus(accountId, name, facilities, new Price(price), capacity, busType, Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationArrivalId), Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationDepartureId));
-            busTable.add(newBus);
-            return new BaseResponse<>(true, "Bus added successfully", newBus);
-        } catch (Exception e) {
-            return new BaseResponse<>(false, "An error occurred while adding the bus", null);
         }
+        Bus bus = new Bus(accountId, name, facilities, new Price(price), capacity, busType, Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationArrivalId), Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationDepartureId));
+        busTable.add(bus);
+        return new BaseResponse<>(true, "Bus Berhasil dibuat", bus);
     }
 
     @PostMapping("/addSchedule")
-    BaseResponse<Bus> addSchedule
+    public BaseResponse<Bus> addSchedule
             (
                     @RequestParam int busId,
                     @RequestParam String time
             )
     {
-        try{
-            Bus newBus = Algorithm.<Bus>find(busTable, t->t.id == busId);
-            newBus.addSchedule(Timestamp.valueOf(time));
-            return new BaseResponse<>(true, "Schedule added successfully", newBus);
-        }catch (Exception e){
-            return new BaseResponse<>(false, "An error occurred while adding the schedule", null);
+        try {
+            Bus bus = Algorithm.<Bus>find(busTable, t -> t.id == busId);
+            bus.addSchedule(Timestamp.valueOf(time));
+            return new BaseResponse<>(true, "Schedule berhasil dibuat", bus);
+        } catch (Exception e) {
+            return new BaseResponse<>(false, "Schedule berhasil dibuat", null);
         }
     }
 }

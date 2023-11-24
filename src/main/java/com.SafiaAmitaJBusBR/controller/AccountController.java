@@ -11,20 +11,18 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/account")
-public class AccountController implements BasicGetController<Account>
-{
-    public static @JsonAutowired(
-            value = Account.class, filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\src\\main\\java\\com.SafiaAmitaJBusBR\\json\\accountDatabase.json"
-    ) JsonTable<Account> accountTable;
+public class AccountController implements BasicGetController<Account> {
 
-    @Override
-    public JsonTable<Account> getJsonTable() {
-        return AccountController.accountTable;
-    }
+    @JsonAutowired(value = Account.class, filepath = "C:\\Users\\LENOVO\\Documents\\OOP\\JBus\\src\\main\\java\\com.SafiaAmitaJBusBR\\json\\accountDatabase.json")
+    public static JsonTable<Account> accountTable;
 
     @GetMapping
-    String index(){
+    String index() {
         return "account page";
+    }
+
+    public JsonTable<Account> getJsonTable() {
+        return accountTable;
     }
 
     @PostMapping("/register")
@@ -33,30 +31,26 @@ public class AccountController implements BasicGetController<Account>
                     @RequestParam String name,
                     @RequestParam String email,
                     @RequestParam String password
-            )
-    {
+            ) {
         String hashedPass = "";
-
-        Account acc = new Account (name, email, password);
-        System.out.println(acc.validate());
-        if (acc.name.isBlank() || !acc.validate() || Algorithm.<Account>exists(getJsonTable(), t -> t.email.equals(acc.email))){
-            return new BaseResponse<>(false, "Gagal register", null);
-        }
-
-        try{
+        try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
             byte[] bytes = md.digest();
             StringBuilder sb = new StringBuilder();
-            for(int i=0; i < bytes.length; i++){
-                sb.append((Integer.toString((bytes[i] & 0xff)+ 0x100, 16).substring(1)));
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append((Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1)));
             }
             hashedPass = sb.toString();
-        }
-        catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        Account hashedAcc = new Account (name, email, hashedPass);
+
+        Account acc = new Account(name, email, password);
+        Account hashedAcc = new Account(name, email, hashedPass);
+        if (acc.name.isBlank() || Algorithm.<Account>exists(getJsonTable(), t -> t.email.equals(acc.email))) {
+            return new BaseResponse<>(false, "Gagal register", null);
+        }
         accountTable.add(hashedAcc);
         return new BaseResponse<Account>(true, "Register Berhasil!", hashedAcc);
     }
@@ -66,20 +60,18 @@ public class AccountController implements BasicGetController<Account>
             (
                     @RequestParam String email,
                     @RequestParam String password
-            )
-    {
+            ) {
         String hashedPass = "";
-        try{
+        try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(password.getBytes());
             byte[] bytes = md.digest();
             StringBuilder sb = new StringBuilder();
-            for(int i=0; i < bytes.length; i++){
-                sb.append((Integer.toString((bytes[i] & 0xff)+ 0x100, 16).substring(1)));
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append((Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1)));
             }
             hashedPass = sb.toString();
-        }
-        catch(NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
@@ -97,10 +89,11 @@ public class AccountController implements BasicGetController<Account>
             @RequestParam String companyName,
             @RequestParam String address,
             @RequestParam String phoneNumber
-    )
-    {
-        if(Algorithm.<Account>exists(getJsonTable(), t->t.id == id && t.company == null)){
+    ) {
+        Account acc = Algorithm.<Account>find(accountTable, account -> account.id == id);
+        if (Algorithm.<Account>exists(getJsonTable(), t -> t.id == id && t.company == null)) {
             Renter renter = new Renter(companyName, address, phoneNumber);
+            acc.company = renter;
             return new BaseResponse<>(true, "Renter berhasil dibuat", renter);
         }
         return new BaseResponse<>(false, "Gagal membuat renter", null);
@@ -110,9 +103,8 @@ public class AccountController implements BasicGetController<Account>
     BaseResponse<Double> topUp(
             @PathVariable int id,
             @RequestParam Double amount
-    )
-    {
-        if(Algorithm.<Account>exists(getJsonTable(), t->t.id == id && t.topUp(amount)))
+    ) {
+        if (Algorithm.<Account>exists(getJsonTable(), t -> t.id == id && t.topUp(amount)))
             return new BaseResponse<>(true, "Top Up Berhasil", amount);
         return new BaseResponse<>(false, "Top Up Tidak berhasil", amount);
     }
