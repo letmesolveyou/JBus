@@ -1,7 +1,17 @@
+/**
+ * The `Algorithm` class provides utility methods for working with collections and iterators,
+ * including operations such as filtering, counting, finding elements, and pagination.
+ *
+ * @author Safia Amita
+ * @version 1.0
+ * @since 2023-09-07
+ */
+
 package com.SafiaAmitaJBusBR;
 import java.util.*;
 
 public class Algorithm {
+    // Private constructor to prevent instantiation.
     private Algorithm() {
     }
 
@@ -43,6 +53,7 @@ public class Algorithm {
 
         return list;
     }
+
 
     public static <T> int count(Iterator<T> iterator, T value) {
         Objects.requireNonNull(value);

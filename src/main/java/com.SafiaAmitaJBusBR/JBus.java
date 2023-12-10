@@ -1,3 +1,13 @@
+/**
+ * The `JBus` class serves as the main class for the JBus application. It contains various static methods
+ * related to bus operations, discount calculations, and other utility functions. The class also includes the
+ * main method to run the Spring Boot application. It uses the `JsonDBEngine` for data storage and retrieval.
+ *
+ * @author Safia Amita
+ * @version 1.0
+ * @since 2023-09-07
+ */
+
 package com.SafiaAmitaJBusBR;
 
 import java.sql.Timestamp;

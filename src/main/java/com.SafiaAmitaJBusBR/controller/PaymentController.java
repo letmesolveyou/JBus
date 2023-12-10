@@ -20,30 +20,48 @@ public class PaymentController implements BasicGetController<Payment>{
         return paymentTable;
     }
 
-    @RequestMapping(value="/makeBooking", method= RequestMethod.POST)
-    public BaseResponse<Payment> makeBooking
-            (
-                    @RequestParam int buyerId,
-                    @RequestParam int renterId,
-                    @RequestParam int busId,
-                    @RequestParam List<String> busSeats,
-                    @RequestParam String departureDate
-            )
-    {
-        Account buyer = Algorithm.<Account>find(new AccountController().getJsonTable(), t -> t.id == buyerId);
-        Bus bus = Algorithm.<Bus>find(new BusController().getJsonTable(), a -> a.id == busId);
-        if (buyer == null || bus == null || bus.price.price < buyer.balance ||
-                !Algorithm.<Schedule>exists(bus.schedules, a -> a.departureSchedule.equals(Timestamp.valueOf(departureDate)))
-                || !Payment.makeBooking(Timestamp.valueOf(departureDate), busSeats, bus)) {
-            return new BaseResponse<>(false, "Gagal membuat booking", null);
+    @GetMapping("/getBuyerPayment")
+    public BaseResponse<List<Payment>> getBuyerPayment(@RequestParam int buyerId) {
+        List<Payment> p = Algorithm.<Payment>collect(getJsonTable(), val->val.buyerId==buyerId);
+        if (p != null) {
+            return new BaseResponse<>(true, "Berhasil getBuyerPayment", p);
         }
-        Payment payment = new Payment(buyerId, renterId, busId, busSeats, Timestamp.valueOf(departureDate));
-        payment.status = Invoice.PaymentStatus.WAITING;
-        paymentTable.add(payment);
-        return new BaseResponse<>(true, "Berhasil membuat booking", payment);
+        return new BaseResponse<>(false, "Gagal getBuyerPayment", null);
     }
 
-    @RequestMapping(value = "/{id}/accept", method = RequestMethod.POST)
+    @PostMapping("/makeBooking")
+    public BaseResponse<Payment> makeBooking (
+            @RequestParam int buyerId,
+            @RequestParam int renterId,
+            @RequestParam int busId,
+            @RequestParam List<String> busSeats,
+            @RequestParam String departureDate
+    ) {
+        AccountController ac = new AccountController();
+        StationController sc = new StationController();
+        BusController bc = new BusController();
+
+        Predicate<Account> a = (val) -> val.id == buyerId;
+        Predicate<Bus> b = (val) -> val.id == busId;
+        Predicate<Schedule> s = (val) -> val.departureSchedule.equals(Timestamp.valueOf(departureDate));
+
+        Account buyer = Algorithm.find(ac.getJsonTable(), a);
+        Bus bus = Algorithm.find(bc.getJsonTable(), b);
+        if (buyer != null && bus != null) {
+            Schedule depart = Algorithm.find(bus.schedules, s);
+            if (buyer.balance >= bus.price.price && depart != null && depart.isSeatAvailable(busSeats)) {
+                Payment pay = new Payment(buyerId, renterId, busId, busSeats, Timestamp.valueOf(departureDate));
+                pay.status = Invoice.PaymentStatus.WAITING;
+                Payment.makeBooking(Timestamp.valueOf(departureDate), pay.busSeats, bus);
+                buyer.balance -= busSeats.size() * bus.price.price;
+                paymentTable.addElement(pay);
+                return new BaseResponse<>(true, "Berhasil makeBooking", pay);
+            }
+        }
+        return new BaseResponse<>(false, "Gagal makeBooking", null);
+    }
+
+    @PostMapping ("/{id}/accept")
     public BaseResponse<Payment> accept(@PathVariable int id)
     {
         try{
@@ -56,7 +74,7 @@ public class PaymentController implements BasicGetController<Payment>{
         }
     }
 
-    @RequestMapping(value = "/{id}/cancel", method = RequestMethod.POST)
+    @PostMapping ("/{id}/cancel")
     public BaseResponse<Payment> cancel(@PathVariable int id)
     {
         try{

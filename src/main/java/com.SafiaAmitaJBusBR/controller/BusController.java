@@ -40,7 +40,8 @@ public class BusController implements BasicGetController<Bus>{
             return new BaseResponse<>(false, "Bus gagal dibuat", null);
 
         }
-        Bus bus = new Bus(accountId, name, facilities, new Price(price), capacity, busType, Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationArrivalId), Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationDepartureId));
+        Bus bus = new Bus(name, facilities, new Price(price), capacity, busType, Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationArrivalId), Algorithm.<Station>find(new StationController().getJsonTable(), t->t.id == stationDepartureId));
+        bus.accountId = accountId;
         busTable.add(bus);
         return new BaseResponse<>(true, "Bus Berhasil dibuat", bus);
     }
@@ -60,4 +61,21 @@ public class BusController implements BasicGetController<Bus>{
             return new BaseResponse<>(false, "Schedule berhasil dibuat", null);
         }
     }
+
+    @GetMapping("/getMyBus")
+    public BaseResponse<List<Bus>> getMyBus(@RequestParam int accountId) {
+        List<Bus> bus = Algorithm.<Bus>collect(getJsonTable(), b->b.accountId==accountId);
+        if (bus != null) {
+            return new BaseResponse<>(true, "Berhasil getMyBus", bus);
+        }
+        return new BaseResponse<>(false, "Gagal getMyBus", null);
+    }
+
+    @GetMapping("/getAllBus")
+    public BaseResponse<List<Bus>> getAllBus(){
+        return new BaseResponse<>(true, "", getJsonTable());
+    }
+
+
+
 }

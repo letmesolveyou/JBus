@@ -1,38 +1,68 @@
+/**
+ * The `Schedule` class represents the schedule of a bus, including the departure timestamp
+ * and seat availability information.
+ *
+ * @author Safia Amita
+ * @version 1.0
+ * @since 2023-09-07
+ */
+
 package com.SafiaAmitaJBusBR;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Schedule
-{
+public class Schedule {
+
+    /** The timestamp of the departure schedule. */
     public Timestamp departureSchedule;
+
+    /** The seat availability map, where key is seat number and value is availability status. */
     public Map<String, Boolean> seatAvailability;
-    
-    public Schedule(Timestamp departureSchedule, int numberOfSeats)
-    {
+
+    /**
+     * Constructs a `Schedule` object with a specified departure schedule and number of seats.
+     *
+     * @param departureSchedule The timestamp of the departure schedule.
+     * @param numberOfSeats The number of seats in the bus.
+     */
+    public Schedule(Timestamp departureSchedule, int numberOfSeats) {
         this.departureSchedule = departureSchedule;
-        intializedSeatAvailability(numberOfSeats);
+        initializeSeatAvailability(numberOfSeats);
     }
 
-    private void intializedSeatAvailability(int numberOfSeats)
-    {
+    /**
+     * Initializes the seat availability map based on the number of seats.
+     *
+     * @param numberOfSeats The number of seats in the bus.
+     */
+    private void initializeSeatAvailability(int numberOfSeats) {
         seatAvailability = new LinkedHashMap<>();
-        for (int seatNumber = 1; seatNumber<=numberOfSeats; seatNumber++)
-        {
-            String sn = seatNumber < 10? "0"+seatNumber : ""+seatNumber;
-            String keySeat = "BR" + sn;
-            seatAvailability.put(keySeat, true);
+        for (int seatNumber = 1; seatNumber <= numberOfSeats; seatNumber++) {
+            String seatCode = (seatNumber < 10) ? "BR0" + seatNumber : "BR" + seatNumber;
+            seatAvailability.put(seatCode, true);
         }
     }
-    
-    public boolean isSeatAvailable (String seat)
-    {
+
+    /**
+     * Checks if a specific seat is available.
+     *
+     * @param seat The seat number to check.
+     * @return True if the seat is available, false otherwise.
+     */
+    public boolean isSeatAvailable(String seat) {
         Boolean availability = seatAvailability.get(seat);
         return availability != null && availability;
     }
-    
-    public boolean bookSeat(String seat) 
-    {
+
+    /**
+     * Books a specific seat if it is available.
+     *
+     * @param seat The seat number to book.
+     * @return True if the seat is successfully booked, false otherwise.
+     */
+    public boolean bookSeat(String seat) {
         Boolean availability = seatAvailability.get(seat);
         if (availability != null && availability) {
             seatAvailability.put(seat, false);
@@ -40,15 +70,18 @@ public class Schedule
         }
         return false;
     }
-    
+
+    /**
+     * Prints the schedule with seat availability information.
+     */
     public void printSchedule() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy HH:mm:ss");
         String formattedDepartureSchedule = dateFormat.format(this.departureSchedule.getTime());
 
-        System.out.println("Tanggal keberangkatan: " + formattedDepartureSchedule);
-        System.out.println("Daftar kursi dan ketersediaan kursinya: ");
+        System.out.println("Departure Date: " + formattedDepartureSchedule);
+        System.out.println("Seat Availability:");
 
-        int maxSeatsPerRow = 4; // Anggap ada 4 kursi per baris
+        int maxSeatsPerRow = 4; // Assuming 4 seats per row
         int currentSeat = 1;
 
         for (String seat : this.seatAvailability.keySet()) {
@@ -63,6 +96,12 @@ public class Schedule
         System.out.println("\n");
     }
 
+    /**
+     * Checks if a list of seats is available.
+     *
+     * @param seats The list of seat numbers to check.
+     * @return True if all seats are available, false otherwise.
+     */
     public boolean isSeatAvailable(List<String> seats) {
         for (String seat : seats) {
             if (!isSeatAvailable(seat)) {
@@ -72,6 +111,12 @@ public class Schedule
         return true;
     }
 
+    /**
+     * Books a list of seats if all seats are available.
+     *
+     * @param seats The list of seat numbers to book.
+     * @return True if all seats are successfully booked, false otherwise.
+     */
     public boolean bookSeat(List<String> seats) {
         boolean allSeatsBooked = true;
         for (String seat : seats) {
@@ -82,6 +127,11 @@ public class Schedule
         return allSeatsBooked;
     }
 
+    /**
+     * Returns a string representation of the `Schedule` object.
+     *
+     * @return A string containing the departure schedule and seat availability.
+     */
     @Override
     public String toString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy HH:mm:ss");
@@ -91,6 +141,6 @@ public class Schedule
         int seatsFilled = (int) seatAvailability.values().stream().filter(b -> !b).count();
 
         return "Schedule: " + formattedDepartureSchedule +
-                "\nOccupied: " + seatsFilled + "/"+ totalSeats;
+                "\nOccupied: " + seatsFilled + "/" + totalSeats;
     }
 }
